@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" , initial-scale=1.0"/>
+    <title>Registro de Contacto</title>
+    <script>
+      /* invoca a registraServiceWorker instalar la aplicación en el caché del
+       * navegador. No se espera a que termine el registro. */
+      registraServiceWorker();
+      /** Registra un service worker para instalar la aplicación en el
+       * caché del navegador. La palabra reservada async indica que no espera
+       * a que termine y libera el registro de activación que lo llamó. */
+      async function registraServiceWorker() {
+        if ("serviceWorker" in navigator) {
+          try {
+            /* Registra el service worker y espera que termine. El service
+             * worker debe estar en la carpeta public. La palabra await indica
+             * que espera a que termine y solo puede usarse en una función
+             * async. */
+            const registro = await navigator.serviceWorker.register("sw.js");
+            // Registro correcto y se muestra en la consola.
+            console.log("Service Worker registrado.");
+            console.log(registro);
+          } catch (e) {
+            // Hubo un error en el registro.
+            muestraError(e);
+          }
+        }
+      }
+      /** Procesa una excepción y muestra un mensaje de error.
+       * @param {Error} e descripción del error. */
+      function muestraError(e) {
+        console.log(e);
+        alert(e.message);
+      }
+    </script>
+
+    <!-- Ícono para la página web. Debe ponerse en la raíz de la página. -->
+    <link rel="icon" sizes="32x32" href="favicon.ico" />
+
+    <!-- Color de la barra de navegación de Chrome en dispositivos móviles. -->
+    <meta name="theme-color" content="#c7c7c7" />
+
+    <!-- Configuración de la PWA: Chrome y Edge. -->
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Configuración para Web Clip en Safari. -->
+    <meta name="apple-mobile-web-app-title" content="pwaContacto" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="img/icono-2048.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="img/icono-256.png" />
+    <link rel="apple-touch-icon" sizes="1024x1024" href="img/icono-1024.png" />
+    <link rel="apple-touch-icon" sizes="2048x2048" href="img/icono-2048.png" />
+
+    <script type="module" src="cmp/mi-footer.js"></script>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet">
+
+    <!-- Carga el núcleo de Firebase. Actualiza los números de versión cuando
+    sea necesario. Hemos quitado el atributo defer que aparecía originalmente.
+    -->
+    <script src="/__/firebase/7.14.6/firebase-app.js"></script>
+    <!-- Solo incluye las características de Firebase que necesites.s -->
+    <script src="/__/firebase/7.14.6/firebase-auth.js"></script>
+    <script src="/__/firebase/7.14.6/firebase-firestore.js"></script>
+    <script src="/__/firebase/7.14.6/firebase-storage.js"></script>
+    <!-- Carga la configuración de tu proyecto en el servidor de Firebase. -->
+    <script src="/__/firebase/init.js"></script>
+    
+    <body>
+      <form class="menu">
+        <header>
+          <h1>Contacto</h1>
+          <div class="ext">
+            <button type="button" onclick="extension.classList.toggle('muestra');">
+              <span class="material-icons">more_vert</span>
+            </button>
+            <ul id="extension">
+              <li>
+                <button class="boton_personalizado sucess" type="button" onclick="guarda();">Guardar</button>
+              </li>
+              <li>
+              <button class="boton_personalizado sucess" id="agregar" type="button" onclick="alta();">Agregar</button>
+              </li>
+              <li>
+                <button class="boton_personalizado error" id="eliminar" type="button" onclick="elimina();">Eliminar</button>
+                </li>
+            </ul>
+          </div>
+        </header>
+      </form>
+
+        <div class="container txc">
+            <form >            
+                <div class="row">
+                  <p class="campo flotante">
+                    <input id="nombre" type="text" rows="4" required></textarea>
+                    <label for="nombre">Nombre </label>
+                  </p>
+                  <p class="campo flotante">
+                    <input id="apellido" type="text" rows="4" required></textarea>
+                    <label for="apellido">Apellido </label>
+                  </p>
+                  <p class="campo flotante">
+                    <input id="numero" type="text" pattern="[0-9]{10,16}" rows="4" required></textarea>
+                    <label for="numero">Numero Telefonico </label>
+                  </p>
+                  <p class="campo">
+                    <input id="correo" type="email" rows="4" required></textarea>
+                    <label for="correo">Correo Electronico </label>
+                  </p>  
+                </div>  
+            </form>
+
+            <div class="row">
+            </select>
+            <ul id="lista">
+                <li><progress max="100">Cargando…</progress></li>
+    
+            </ul>
+
+                
+            </div>
+        </div>
+        <mi-footer></mi-footer>        
+      <script>
+        let id = "";
+        const firestore = firebase.firestore();
+        muestraLista();
+        alta();
+
+        function muestraLista() {
+          firestore.collection("CONTACTO").orderBy("C_NOMBRE").onSnapshot;
+          firestore.collection("CONTACTO").orderBy("C_APELLIDO").onSnapshot;
+          firestore.collection("CONTACTO").orderBy("C_NUMERO").onSnapshot;
+          firestore.collection("CONTACTO").orderBy("C_CORREO").onSnapshot(
+              (documentos) => {
+                let inner = "";
+                console.log(documentos)
+                documentos.forEach(
+                  (doc) =>
+                    (inner +=
+                      /* html */
+                      `<li>
+              <div class="campo principal" type=button onclick="muestra('${cod(doc.id)}');extension.classList.toggle('muestra');">
+                ${cod(doc.data().C_NOMBRE)} 
+              </div>
+              <div class="campo" type=button onclick="muestra('${cod(doc.id)}')">
+                ${cod(doc.data().C_APELLIDO)} 
+              </div>
+              <div class="campo" type=button onclick="muestra('${cod(doc.id)}')">
+                ${cod(doc.data().C_NUMERO)} 
+              </div>
+              <div class="campo" type=button onclick="muestra('${cod(doc.id)}')">
+                ${cod(doc.data().C_CORREO)} 
+              </div>
+            </li>`)
+                  );
+                console.log(lista)
+                lista.innerHTML = inner;
+              },
+              (e) => {
+                procesaError(e);
+                muestraLista();
+              }
+            );
+        }
+
+        function alta() {
+          agregar.disabled = true;
+          eliminar.disabled = true;
+          id = "";
+          nombre.value = "";
+          apellido.value = "";
+          numero.value = "";
+          correo.value = "";
+        }
+
+        async function muestra(idSel) {
+          try {
+            agregar.disabled = false;
+            eliminar.disabled = false;
+
+            let doc = await firestore.collection("CONTACTO").doc(idSel).get();
+            if (doc.exists) {
+              id = doc.id;
+              let data = doc.data();
+              nombre.value = data.C_NOMBRE || "";
+              apellido.value = data.C_APELLIDO || "";
+              numero.value = data.C_NUMERO || "";
+              correo.value = data.C_CORREO || "";
+            } else {
+              alert(" Contacto no registrado.");
+              alta();
+            }
+          } catch (e) {
+            procesaError(e);
+          }
+        }
+        async function guarda() {
+          try {
+            const modelo = {
+              C_NOMBRE: nombre.value.trim(),
+              C_APELLIDO: apellido.value.trim(),
+              C_NUMERO: numero.value.trim(),
+              C_CORREO: correo.value.trim()
+            };
+            if (id) {
+              await firestore.collection("CONTACTO").doc(id).set(modelo);
+            } else {
+              await firestore.collection("CONTACTO").add(modelo);
+            }
+            alta();
+          } catch (e) {
+            procesaError(e);
+          }
+        }
+        async function elimina() {
+          try {
+            await firestore.collection("CONTACTO").doc(id).delete();
+            alta();
+          } catch (e) {
+            procesaError(e);
+          }
+        }
+
+        function procesaError(e) {
+          console.log(e);
+          alert(e.message);
+        }
+
+        function cod(valor) {
+          return (valor || "").toString().replace(
+            /[<>"']/g,
+            /** @param {string} letra */
+            (letra) => {
+              switch (letra) {
+                case "<":
+                  return "&lt;";
+                case ">":
+                  return "&gt;";
+                case '"':
+                  return "&quot;";
+                case "'":
+                  return "&#039;";
+                default:
+                  return letra;
+              }
+            }
+          );
+        }
+      </script>
+    </body>
+  </head>
+</html>
