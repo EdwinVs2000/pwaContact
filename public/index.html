@@ -79,11 +79,11 @@
               <span class="material-icons">more_vert</span>
             </button>
             <ul id="extension">
-              <li>
-                <button class="boton_personalizado sucess" type="button" onclick="guarda();">Guardar</button>
+            <li>
+              <button class="boton_personalizado sucess" id="agregar" type="button" onclick="alta();">Agregar</button>
               </li>
               <li>
-              <button class="boton_personalizado sucess" id="agregar" type="button" onclick="alta();">Agregar</button>
+                <button class="boton_personalizado sucess" type="button" onclick="guarda();">Guardar</button>
               </li>
               <li>
                 <button class="boton_personalizado error" id="eliminar" type="button" onclick="elimina();">Eliminar</button>
@@ -97,19 +97,19 @@
             <form >            
                 <div class="row">
                   <p class="campo flotante">
-                    <input id="nombre" type="text" rows="4" required></textarea>
+                    <input id="nombre" type="text" rows="4" required>
                     <label for="nombre">Nombre </label>
                   </p>
                   <p class="campo flotante">
-                    <input id="apellido" type="text" rows="4" required></textarea>
+                    <input id="apellido" type="text" rows="4" required>
                     <label for="apellido">Apellido </label>
                   </p>
                   <p class="campo flotante">
-                    <input id="numero" type="text" pattern="[0-9]{10,16}" rows="4" required></textarea>
+                    <input id="numero" type="text" pattern="[0-9]{10,16}" rows="4" required>
                     <label for="numero">Numero Telefonico </label>
                   </p>
                   <p class="campo">
-                    <input id="correo" type="email" rows="4" required></textarea>
+                    <input id="correo" type="email" rows="4" required>
                     <label for="correo">Correo Electronico </label>
                   </p>  
                 </div>  
@@ -119,13 +119,12 @@
             </select>
             <ul id="lista">
                 <li><progress max="100">Cargando…</progress></li>
-    
-            </ul>
-
-                
+            </ul>                
             </div>
         </div>
+
         <mi-footer></mi-footer>        
+      
       <script>
         let id = "";
         const firestore = firebase.firestore();

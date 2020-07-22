@@ -3,7 +3,7 @@
     --color-hover: #1bfff4;
     --color-ext: rgb(255, 255, 255);
     --color-sombra: #1bfff4;
-    font-family: sans-serif;
+    font-family:  serif;
   }
 
 
@@ -26,7 +26,7 @@
     background-color: var(--color-hover);
   }
   li:hover {
-    background-color: #e2e2e2;
+    background-color: #f1eded;
   
 
   }
@@ -38,9 +38,9 @@
   }
   :root {
     --color-secundario: rgb(1, 229, 236);
-    --color-componente: rgb(59, 59, 59);
-    --altura-etiqueta: 0.7rem;
-    font-family: sans-serif
+    --color-componente: rgb(14, 13, 13);
+    --altura-etiqueta: 0.6rem;
+    font-family: cursive;
   }
 
   * {
@@ -49,15 +49,15 @@
 
   body {
     margin: 0;
-    background-color:#f7f7f7;
+    background-color:#ffffff;
   }
 
   input,
   textarea {
     width: 100%;
-    padding: 2px 0;
+    padding: 3px 0;
     border: none;
-    border-bottom: 1px solid var(--color-componente);
+    border-bottom: 2px solid var(--color-componente);
   }
 
   input:focus,
@@ -117,7 +117,7 @@ header {
   }
  
   .txc {
-     margin-top: 60px;
+     margin-top: 80px;
   }
 
   h1 {
@@ -128,7 +128,7 @@ header {
   }
 
   button {
-    border: none;
+    border:none;
     padding: 0.5rem;
     cursor: default;
     background-color: transparent;
@@ -163,14 +163,17 @@ header {
     display: block;
     width: 100%;
   }
+
   mi-footer{
     position: fixed;
-    bottom: 0;
     left: 0;
     right: 0;
-    background-color: #c7c7c7;
-    padding: 15px;
+    bottom: 0;
+    background-color: #1bfff4;
+    padding: 10px;
     text-align: center;
-
-    font-size: calc(.3em + 1vw);
+    font: message-box;
+    font-size: calc([minimum size] + ([maximum size] - [minimum size]) * 
+    ((1vw - [minimum viewport width]) / ([maximum viewport width] - 
+    [minimum viewport width])));
 }
